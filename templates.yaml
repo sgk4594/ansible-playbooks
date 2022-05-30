@@ -1,0 +1,6 @@
+- hosts: group1
+  tasks:
+  - name: pushing templates
+    template:
+      src: /etc/ansible/templates/xyz.conf.j2
+      dest: /tmp/xyz.conf

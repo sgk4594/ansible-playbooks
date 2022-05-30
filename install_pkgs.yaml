@@ -1,0 +1,16 @@
+--- 
+- 
+  hosts: all
+  tasks: 
+    - name: "installing {{pkg_name}}"
+      vars: 
+        pkg_name: httpd
+        pkg_state: present
+      when: ansible_facts['os_family'] == 'RedHat'
+      yum: "name = {{pkg_name}} state = {{pkg_state}}"
+    - name: "installing {{pkg_name}}"
+      vars: 
+        pkg_name: apache2
+        pkg_state: present
+      when: ansible_facts['os_family'] == 'Debian'
+      apt: "name = {{pkg_name}} state = {{pkg_state}}"

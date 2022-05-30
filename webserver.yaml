@@ -1,0 +1,13 @@
+---
+- hosts: group1
+  tasks:
+  - name: installation of httpd
+    yum:
+      name: httpd
+      state: present
+  - name: httpd service to start
+    service:
+      name: httpd
+      state: started
+  - name: copying the html files
+    copy: src=/tmp/index.html dest=/var/www/html/index.html

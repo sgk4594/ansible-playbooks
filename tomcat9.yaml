@@ -1,0 +1,25 @@
+---
+- hosts: group2
+  tasks:
+  - name: installig jdk 1.8
+    yum: name=java-1.8.0-openjdk-devel state=present
+  - name: downloading tomcat9 tar file
+    get_url: url=https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.37/bin/apache-tomcat-9.0.37.tar.gz dest=/usr/local/apache-tomcat-9.0.37.tar.gz
+  - name: extracting tar
+    command: sudo tar -xvf /usr/local/apache-tomcat-9.0.37.tar.gz -C /usr/local/
+  - name: rename to tomcat9
+    command: sudo cp -r /usr/local/apache-tomcat-9.0.37 /usr/local/tomcat9
+  - name: exporting the path
+    command: sudo echo "export CATALINA_HOME="/usr/local/tomcat9"" >> /home/ansible-user/.bashrc
+  - name: soursing bashrc
+    shell: cmd=sudo source /home/ansible-user/.bashrc
+  - name: start tomcat service
+    command: nohup /usr/local/tomcat9/bin/startup.sh
+  - name: copy tomcat user.xml
+    copy: src=/tmp/tomcat-users.xml dest=/usr/local/tomcat9/conf/tomcat-users.xml
+  - name: copy context.xml
+    copy: src=/tmp/context.xml dest=/usr/local/tomcat9/webapps/manager/META-INF/context.xml
+  - name: shutdown tomcat service
+    command: sudo sh /usr/local/tomcat9/bin/shutdown.sh
+  - name: start tomcat service
+    command: nohup sh /usr/local/tomcat9/bin/startup.sh
